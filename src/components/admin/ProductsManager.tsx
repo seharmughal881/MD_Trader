@@ -123,8 +123,8 @@ export default function ProductsManager({ items }: { items: Category[] }) {
 }
 
 /* Shared small pieces also used by other managers */
-export function ImageField({ name, defaultValue }: { name: string; defaultValue?: string | null }) {
-  return <ImageUploader name={name} defaultValue={defaultValue ?? ""} />;
+export function ImageField({ name, defaultValue, label }: { name: string; defaultValue?: string | null; label?: string }) {
+  return <ImageUploader name={name} defaultValue={defaultValue ?? ""} label={label} />;
 }
 
 export function DeleteButton({

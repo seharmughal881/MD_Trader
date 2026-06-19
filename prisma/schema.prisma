@@ -24,15 +24,17 @@ model Category {
 }
 
 model GalleryItem {
-  id        String   @id @default(cuid())
-  title     String
-  category  String   @default("Showroom")
-  size      String   @default("normal") // tall | wide | normal
-  imageUrl  String?
-  fromColor String   @default("#23211b")
-  toColor   String   @default("#0c0c0d")
-  order     Int      @default(0)
-  createdAt DateTime @default(now())
+  id             String   @id @default(cuid())
+  title          String
+  category       String   @default("Showroom")
+  size           String   @default("normal") // tall | wide | normal
+  imageUrl       String?
+  beforeImageUrl String?
+  afterImageUrl  String?
+  fromColor      String   @default("#23211b")
+  toColor        String   @default("#0c0c0d")
+  order          Int      @default(0)
+  createdAt      DateTime @default(now())
 }
 
 model Testimonial {

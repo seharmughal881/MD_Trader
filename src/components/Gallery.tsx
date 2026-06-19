@@ -2,10 +2,13 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { X, ChevronLeft, ChevronRight, Maximize2 } from "lucide-react";
+import { X, ChevronLeft, ChevronRight, Maximize2, SplitSquareHorizontal } from "lucide-react";
 import type { GalleryItem } from "@/lib/types";
 import type { SiteContent } from "@/lib/content";
 import SectionHeading from "./SectionHeading";
+import BeforeAfterSlider from "./BeforeAfterSlider";
+
+const isBeforeAfter = (g: GalleryItem) => Boolean(g.beforeImageUrl && g.afterImageUrl);
 
 const spanClass: Record<string, string> = {
   tall: "row-span-2",
@@ -81,8 +84,13 @@ export default function Gallery({ gallery, heading }: { gallery: GalleryItem[]; 
               onClick={() => setIndex(i)}
               className={`group relative overflow-hidden rounded-2xl border border-gold/10 text-left ${spanClass[g.size]}`}
             >
-              <GalleryArt from={g.from} to={g.to} title={g.title} imageUrl={g.imageUrl} />
+              <GalleryArt from={g.from} to={g.to} title={g.title} imageUrl={g.imageUrl ?? (isBeforeAfter(g) ? g.afterImageUrl : null)} />
               <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent" />
+              {isBeforeAfter(g) && (
+                <span className="absolute left-3 top-3 z-10 flex items-center gap-1 rounded-full bg-ink/70 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-gold">
+                  <SplitSquareHorizontal className="h-3 w-3" /> Before / After
+                </span>
+              )}
               <div className="absolute inset-0 flex flex-col justify-end p-5">
                 <span className="translate-y-3 text-[10px] uppercase tracking-[0.3em] text-gold opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
                   {g.category}
@@ -141,7 +149,15 @@ export default function Gallery({ gallery, heading }: { gallery: GalleryItem[]; 
               className="relative z-[5] w-full max-w-4xl overflow-hidden rounded-3xl"
             >
               <div className="relative aspect-[16/10]">
-                <GalleryArt from={item.from} to={item.to} title={item.title} imageUrl={item.imageUrl} />
+                {isBeforeAfter(item) ? (
+                  <BeforeAfterSlider
+                    before={item.beforeImageUrl!}
+                    after={item.afterImageUrl!}
+                    className="h-full w-full"
+                  />
+                ) : (
+                  <GalleryArt from={item.from} to={item.to} title={item.title} imageUrl={item.imageUrl} />
+                )}
               </div>
               <figcaption className="glass flex items-center justify-between px-6 py-4">
                 <div>

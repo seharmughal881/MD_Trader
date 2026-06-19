@@ -18,6 +18,8 @@ export type GalleryItem = {
   category: string;
   size: string;
   imageUrl: string | null;
+  beforeImageUrl: string | null;
+  afterImageUrl: string | null;
   from: string;
   to: string;
   order: number;

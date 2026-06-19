@@ -52,6 +52,15 @@ export default function GalleryManager({ items }: { items: GalleryItem[] }) {
           </div>
           <div className="mt-5"><ImageField name="imageUrl" defaultValue={current?.imageUrl} /></div>
 
+          <details className="mt-5 rounded-xl border border-gold/10 p-4" open={Boolean(current?.beforeImageUrl || current?.afterImageUrl)}>
+            <summary className="cursor-pointer text-sm text-mist">Before / After comparison (optional)</summary>
+            <p className="mt-2 text-[11px] text-ash">Upload both images to show a draggable before/after slider in the lightbox.</p>
+            <div className="mt-4 grid gap-4 sm:grid-cols-2">
+              <ImageField name="beforeImageUrl" defaultValue={current?.beforeImageUrl} label="Before image" />
+              <ImageField name="afterImageUrl" defaultValue={current?.afterImageUrl} label="After image" />
+            </div>
+          </details>
+
           <details className="mt-5 rounded-xl border border-gold/10 p-4">
             <summary className="cursor-pointer text-sm text-mist">Advanced: gradient fallback colors</summary>
             <div className="mt-4 grid gap-4 sm:grid-cols-2">

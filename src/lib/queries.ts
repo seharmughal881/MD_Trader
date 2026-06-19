@@ -78,7 +78,8 @@ export async function getGallery(): Promise<GalleryItem[]> {
   const rows = await prisma.galleryItem.findMany({ orderBy: [{ order: "asc" }, { createdAt: "asc" }] });
   return rows.map((r) => ({
     id: r.id, title: r.title, category: r.category, size: r.size,
-    imageUrl: r.imageUrl, from: r.fromColor, to: r.toColor, order: r.order,
+    imageUrl: r.imageUrl, beforeImageUrl: r.beforeImageUrl, afterImageUrl: r.afterImageUrl,
+    from: r.fromColor, to: r.toColor, order: r.order,
   }));
 }
 

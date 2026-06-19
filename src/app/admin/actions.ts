@@ -75,6 +75,8 @@ export async function saveGallery(formData: FormData) {
     category: s(formData, "category") || "Showroom",
     size: s(formData, "size") || "normal",
     imageUrl: s(formData, "imageUrl") || null,
+    beforeImageUrl: s(formData, "beforeImageUrl") || null,
+    afterImageUrl: s(formData, "afterImageUrl") || null,
     fromColor: s(formData, "fromColor") || "#23211b",
     toColor: s(formData, "toColor") || "#0c0c0d",
     order: n(formData, "order"),
