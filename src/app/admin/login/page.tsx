@@ -1,15 +1,13 @@
 import LoginForm from "./LoginForm";
 
 export default function LoginPage() {
-  // Show a credentials hint ONLY in development. In production (Vercel) this is
-  // null, so the password never reaches the browser and nothing is exposed.
-  const devHint =
-    process.env.NODE_ENV !== "production"
-      ? {
-          username: process.env.ADMIN_USERNAME ?? "admin",
-          password: process.env.ADMIN_PASSWORD ?? "admin",
-        }
-      : null;
+  // Login details shown on the page for convenience. They reflect the configured
+  // ADMIN_USERNAME / ADMIN_PASSWORD. ⚠️ Remove before a real public launch, or
+  // anyone can sign in to the admin.
+  const credentials = {
+    username: process.env.ADMIN_USERNAME ?? "admin",
+    password: process.env.ADMIN_PASSWORD ?? "admin",
+  };
 
-  return <LoginForm devHint={devHint} />;
+  return <LoginForm credentials={credentials} />;
 }
