@@ -97,6 +97,11 @@ function merge<T>(base: T, override: unknown): T {
 }
 
 export async function getContent(): Promise<SiteContent> {
-  const row = await prisma.siteContent.findUnique({ where: { id: 1 } });
-  return merge(DEFAULT_CONTENT, row?.data);
+  try {
+    const row = await prisma.siteContent.findUnique({ where: { id: 1 } });
+    return merge(DEFAULT_CONTENT, row?.data);
+  } catch {
+    // DB unreachable (e.g. during a build with no database) — use defaults.
+    return DEFAULT_CONTENT;
+  }
 }

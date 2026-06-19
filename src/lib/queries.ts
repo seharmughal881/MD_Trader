@@ -25,26 +25,31 @@ export const DEFAULT_BUSINESS: BusinessInfo = {
 };
 
 export async function getBusiness(): Promise<BusinessInfo> {
-  const row = await prisma.business.findUnique({ where: { id: 1 } });
-  if (!row) {
-    const created = await prisma.business.create({
-      data: {
-        id: 1,
-        name: DEFAULT_BUSINESS.name,
-        tagline: DEFAULT_BUSINESS.tagline,
-        phone: DEFAULT_BUSINESS.phone,
-        phoneHref: DEFAULT_BUSINESS.phoneHref,
-        whatsapp: DEFAULT_BUSINESS.whatsapp,
-        email: DEFAULT_BUSINESS.email,
-        address: DEFAULT_BUSINESS.address,
-        mapQuery: DEFAULT_BUSINESS.mapQuery,
-        hours: DEFAULT_BUSINESS.hours,
-        socials: DEFAULT_BUSINESS.socials,
-      },
-    });
-    return mapBusiness(created);
+  try {
+    const row = await prisma.business.findUnique({ where: { id: 1 } });
+    if (!row) {
+      const created = await prisma.business.create({
+        data: {
+          id: 1,
+          name: DEFAULT_BUSINESS.name,
+          tagline: DEFAULT_BUSINESS.tagline,
+          phone: DEFAULT_BUSINESS.phone,
+          phoneHref: DEFAULT_BUSINESS.phoneHref,
+          whatsapp: DEFAULT_BUSINESS.whatsapp,
+          email: DEFAULT_BUSINESS.email,
+          address: DEFAULT_BUSINESS.address,
+          mapQuery: DEFAULT_BUSINESS.mapQuery,
+          hours: DEFAULT_BUSINESS.hours,
+          socials: DEFAULT_BUSINESS.socials,
+        },
+      });
+      return mapBusiness(created);
+    }
+    return mapBusiness(row);
+  } catch {
+    // DB unreachable (e.g. during a build with no database) — fall back to defaults.
+    return DEFAULT_BUSINESS;
   }
-  return mapBusiness(row);
 }
 
 function mapBusiness(row: {
@@ -66,34 +71,50 @@ function mapBusiness(row: {
 }
 
 export async function getCategories(): Promise<Category[]> {
-  const rows = await prisma.category.findMany({ orderBy: [{ order: "asc" }, { createdAt: "asc" }] });
-  return rows.map((r) => ({
-    id: r.id, name: r.name, tag: r.tag, desc: r.desc, features: r.features,
-    accent: r.accent, from: r.fromColor, to: r.toColor, icon: r.icon, imageUrl: r.imageUrl,
-    order: r.order,
-  }));
+  try {
+    const rows = await prisma.category.findMany({ orderBy: [{ order: "asc" }, { createdAt: "asc" }] });
+    return rows.map((r) => ({
+      id: r.id, name: r.name, tag: r.tag, desc: r.desc, features: r.features,
+      accent: r.accent, from: r.fromColor, to: r.toColor, icon: r.icon, imageUrl: r.imageUrl,
+      order: r.order,
+    }));
+  } catch {
+    return [];
+  }
 }
 
 export async function getGallery(): Promise<GalleryItem[]> {
-  const rows = await prisma.galleryItem.findMany({ orderBy: [{ order: "asc" }, { createdAt: "asc" }] });
-  return rows.map((r) => ({
-    id: r.id, title: r.title, category: r.category, size: r.size,
-    imageUrl: r.imageUrl, beforeImageUrl: r.beforeImageUrl, afterImageUrl: r.afterImageUrl,
-    from: r.fromColor, to: r.toColor, order: r.order,
-  }));
+  try {
+    const rows = await prisma.galleryItem.findMany({ orderBy: [{ order: "asc" }, { createdAt: "asc" }] });
+    return rows.map((r) => ({
+      id: r.id, title: r.title, category: r.category, size: r.size,
+      imageUrl: r.imageUrl, beforeImageUrl: r.beforeImageUrl, afterImageUrl: r.afterImageUrl,
+      from: r.fromColor, to: r.toColor, order: r.order,
+    }));
+  } catch {
+    return [];
+  }
 }
 
 export async function getTestimonials(): Promise<Testimonial[]> {
-  const rows = await prisma.testimonial.findMany({ orderBy: [{ order: "asc" }, { createdAt: "asc" }] });
-  return rows.map((r) => ({
-    id: r.id, name: r.name, role: r.role, rating: r.rating,
-    text: r.text, initials: r.initials, imageUrl: r.imageUrl, order: r.order,
-  }));
+  try {
+    const rows = await prisma.testimonial.findMany({ orderBy: [{ order: "asc" }, { createdAt: "asc" }] });
+    return rows.map((r) => ({
+      id: r.id, name: r.name, role: r.role, rating: r.rating,
+      text: r.text, initials: r.initials, imageUrl: r.imageUrl, order: r.order,
+    }));
+  } catch {
+    return [];
+  }
 }
 
 export async function getServices(): Promise<Service[]> {
-  const rows = await prisma.service.findMany({ orderBy: [{ order: "asc" }, { createdAt: "asc" }] });
-  return rows.map((r) => ({ id: r.id, title: r.title, desc: r.desc, icon: r.icon, order: r.order }));
+  try {
+    const rows = await prisma.service.findMany({ orderBy: [{ order: "asc" }, { createdAt: "asc" }] });
+    return rows.map((r) => ({ id: r.id, title: r.title, desc: r.desc, icon: r.icon, order: r.order }));
+  } catch {
+    return [];
+  }
 }
 
 export async function getSiteData(): Promise<SiteData> {
