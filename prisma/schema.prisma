@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id        String   @id @default(cuid())
+  name      String
+  tag       String
+  desc      String
+  features  String[]
+  accent    String   @default("#c9a24d")
+  fromColor String   @default("#1d1d22")
+  toColor   String   @default("#0a0a0b")
+  icon      String   @default("sparkles")
+  imageUrl  String?
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+}
+
+model GalleryItem {
+  id        String   @id @default(cuid())
+  title     String
+  category  String   @default("Showroom")
+  size      String   @default("normal") // tall | wide | normal
+  imageUrl  String?
+  fromColor String   @default("#23211b")
+  toColor   String   @default("#0c0c0d")
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+}
+
+model Testimonial {
+  id        String   @id @default(cuid())
+  name      String
+  role      String
+  rating    Int      @default(5)
+  text      String
+  initials  String   @default("")
+  imageUrl  String?
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+}
+
+model Service {
+  id        String   @id @default(cuid())
+  title     String
+  desc      String
+  icon      String   @default("sparkles")
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+}
+
+model Business {
+  id        Int      @id @default(1)
+  name      String   @default("MD Traders")
+  tagline   String   @default("Where Luxury Meets Quality")
+  phone     String   @default("")
+  phoneHref String   @default("")
+  whatsapp  String   @default("")
+  email     String   @default("")
+  address   String   @default("")
+  mapQuery  String   @default("")
+  hours     Json     @default("[]")
+  socials   Json     @default("[]")
+  updatedAt DateTime @updatedAt @default(now())
+}

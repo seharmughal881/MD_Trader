@@ -1,36 +1,82 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# MD Traders — Luxury Website + Admin Panel
 
-## Getting Started
+A premium, conversion-focused website for **MD Traders** (tiles, sanitary ware, bathroom
+accessories, faucets, showers, modular kitchens & interior solutions) with a full
+**admin panel** to manage all content — backed by PostgreSQL.
 
-First, run the development server:
+## Tech stack
+- **Next.js 16** (App Router) + **React 19**
+- **Tailwind CSS 4** + **Framer Motion** (animations)
+- **PostgreSQL 14** + **Prisma 6** (ORM)
+- SEO: metadata, OpenGraph, JSON-LD schema, sitemap & robots
+
+---
+
+## Getting started (every time)
+
+The site needs its database running first.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run db:start    # start the local Postgres cluster (port 5544)
+npm run dev         # start the website at http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+To stop the database later: `npm run db:stop`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+> The database lives in `./.postgres` (git-ignored). It does **not** auto-start on
+> reboot — run `npm run db:start` again after restarting your machine.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Production
+```bash
+npm run db:start
+npm run build
+npm start
+```
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## Admin panel
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Open **http://localhost:3000/admin**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Default login (change in `.env`):
+- **Username:** `admin`
+- **Password:** `MDtraders@2026`
 
-## Deploy on Vercel
+From the admin you can add / edit / delete and upload images for:
+- **Products** (categories)
+- **Gallery**
+- **Testimonials**
+- **Services**
+- **Business Info** (name, phone, WhatsApp, email, address, map, hours, social links)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Every change appears on the live website **instantly**. Uploaded images are stored in
+`public/uploads/` (git-ignored). If you don't upload an image, a luxury gradient
+placeholder is shown automatically.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Optional: load starter content
+The database starts **empty**. To pre-fill it with ready-made luxury demo content:
+```bash
+npm run db:seed
+```
+
+---
+
+## Configuration (`.env`)
+```
+DATABASE_URL   # Postgres connection string
+ADMIN_USERNAME # admin login username
+ADMIN_PASSWORD # admin login password  <- change this
+AUTH_SECRET    # session signing secret <- keep private
+```
+
+`.env` is git-ignored. A template is in `.env.example`.
+
+## Useful scripts
+| Command | Description |
+| --- | --- |
+| `npm run dev` | Dev server |
+| `npm run build` / `npm start` | Production build / serve |
+| `npm run db:start` / `npm run db:stop` | Start / stop local Postgres |
+| `npm run db:seed` | Load demo content |
+| `npm run db:studio` | Visual DB browser (Prisma Studio) |
