@@ -14,12 +14,16 @@ import Footer from "@/components/Footer";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
 import LeadPopup from "@/components/LeadPopup";
 import { getSiteData } from "@/lib/queries";
+import { getContent } from "@/lib/content";
 
 // Content is editable from the admin panel, so always render fresh data.
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const { business, categories, gallery, testimonials, services } = await getSiteData();
+  const [{ business, categories, gallery, testimonials, services }, content] = await Promise.all([
+    getSiteData(),
+    getContent(),
+  ]);
 
   return (
     <>
@@ -27,15 +31,15 @@ export default async function Home() {
       <ScrollProgress />
       <Navbar business={business} />
       <main>
-        <Hero />
-        <BrandMarquee />
-        <About />
-        <Categories categories={categories} />
-        <WhyChooseUs />
-        <Gallery gallery={gallery} />
-        <Testimonials testimonials={testimonials} />
-        <Services services={services} />
-        <Contact business={business} />
+        <Hero hero={content.hero} />
+        <BrandMarquee title={content.brandsTitle} brands={content.brands} />
+        <About content={content.about} />
+        <Categories categories={categories} heading={content.products} />
+        <WhyChooseUs content={content.why} />
+        <Gallery gallery={gallery} heading={content.gallery} />
+        <Testimonials testimonials={testimonials} heading={content.testimonials} />
+        <Services services={services} heading={content.services} />
+        <Contact business={business} heading={content.contact} />
       </main>
       <Footer business={business} categories={categories} />
       <WhatsAppFloat business={business} />

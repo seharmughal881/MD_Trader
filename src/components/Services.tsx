@@ -1,18 +1,19 @@
 import type { Service } from "@/lib/types";
+import type { SiteContent } from "@/lib/content";
 import SectionHeading from "./SectionHeading";
 import Reveal from "./Reveal";
 import Icon from "./Icon";
 
-export default function Services({ services }: { services: Service[] }) {
+export default function Services({ services, heading }: { services: Service[]; heading: SiteContent["services"] }) {
   if (services.length === 0) return null;
   return (
     <section id="services" className="section relative">
       <div className="container-luxe">
         <SectionHeading
-          eyebrow="What We Offer"
-          title="End-to-End Luxury"
-          highlight="Services"
-          subtitle="More than products — a complete, white-glove journey from first idea to finished space."
+          eyebrow={heading.eyebrow}
+          title={heading.title}
+          highlight={heading.highlight}
+          subtitle={heading.subtitle}
         />
 
         <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">

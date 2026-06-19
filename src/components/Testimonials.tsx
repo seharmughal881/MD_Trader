@@ -4,9 +4,10 @@ import { useCallback, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Star, Quote, ChevronLeft, ChevronRight } from "lucide-react";
 import type { Testimonial } from "@/lib/types";
+import type { SiteContent } from "@/lib/content";
 import SectionHeading from "./SectionHeading";
 
-export default function Testimonials({ testimonials }: { testimonials: Testimonial[] }) {
+export default function Testimonials({ testimonials, heading }: { testimonials: Testimonial[]; heading: SiteContent["testimonials"] }) {
   const [index, setIndex] = useState(0);
   const [dir, setDir] = useState(1);
   const count = testimonials.length;
@@ -31,10 +32,10 @@ export default function Testimonials({ testimonials }: { testimonials: Testimoni
       <div className="absolute right-0 top-1/4 h-[40vh] w-[40vh] rounded-full bg-gold/5 blur-[140px]" />
       <div className="container-luxe relative">
         <SectionHeading
-          eyebrow="Testimonials"
-          title="Loved by"
-          highlight="Discerning Clients"
-          subtitle="Real experiences from homeowners and designers who trusted us with their spaces."
+          eyebrow={heading.eyebrow}
+          title={heading.title}
+          highlight={heading.highlight}
+          subtitle={heading.subtitle}
         />
 
         <div className="relative mx-auto mt-12 max-w-3xl">

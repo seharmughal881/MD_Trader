@@ -4,6 +4,7 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { X, ChevronLeft, ChevronRight, Maximize2 } from "lucide-react";
 import type { GalleryItem } from "@/lib/types";
+import type { SiteContent } from "@/lib/content";
 import SectionHeading from "./SectionHeading";
 
 const spanClass: Record<string, string> = {
@@ -49,7 +50,7 @@ function GalleryArt({
   );
 }
 
-export default function Gallery({ gallery }: { gallery: GalleryItem[] }) {
+export default function Gallery({ gallery, heading }: { gallery: GalleryItem[]; heading: SiteContent["gallery"] }) {
   const [index, setIndex] = useState<number | null>(null);
 
   if (gallery.length === 0) return null;
@@ -63,10 +64,10 @@ export default function Gallery({ gallery }: { gallery: GalleryItem[] }) {
     <section id="gallery" className="section relative bg-onyx/40">
       <div className="container-luxe">
         <SectionHeading
-          eyebrow="Our Work"
-          title="The Luxury"
-          highlight="Showroom Gallery"
-          subtitle="A glimpse into the spaces we've shaped — where premium materials meet meticulous craft."
+          eyebrow={heading.eyebrow}
+          title={heading.title}
+          highlight={heading.highlight}
+          subtitle={heading.subtitle}
         />
 
         <div className="mt-12 grid auto-rows-[200px] grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">

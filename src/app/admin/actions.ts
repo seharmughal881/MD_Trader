@@ -7,6 +7,7 @@ import {
   createSession, destroySession, requireAuth, verifyCredentials,
 } from "@/lib/auth";
 import type { Hour, Social } from "@/lib/types";
+import { DEFAULT_CONTENT, type SiteContent } from "@/lib/content";
 
 function s(formData: FormData, key: string): string {
   return (formData.get(key) as string | null)?.trim() ?? "";
@@ -173,4 +174,70 @@ export async function saveBusiness(formData: FormData) {
   });
   refresh("/admin/business");
   redirect("/admin/business");
+}
+
+/* -------------------------- Site content ------------------------- */
+function lines(raw: string): string[] {
+  return raw.split("\n").map((l) => l.trim()).filter(Boolean);
+}
+function heading(formData: FormData, key: keyof SiteContent, fallback: { eyebrow: string; title: string; highlight: string; subtitle: string }) {
+  return {
+    eyebrow: s(formData, `${key}.eyebrow`) || fallback.eyebrow,
+    title: s(formData, `${key}.title`) || fallback.title,
+    highlight: s(formData, `${key}.highlight`) || fallback.highlight,
+    subtitle: s(formData, `${key}.subtitle`) || fallback.subtitle,
+  };
+}
+
+export async function saveContent(formData: FormData) {
+  await requireAuth();
+  const d = DEFAULT_CONTENT;
+
+  const content: SiteContent = {
+    brandsTitle: s(formData, "brandsTitle") || d.brandsTitle,
+    brands: s(formData, "brands").split(/[\n,]/).map((b) => b.trim()).filter(Boolean),
+    hero: {
+      badge: s(formData, "hero.badge"),
+      titleTop: s(formData, "hero.titleTop"),
+      titleBottom: s(formData, "hero.titleBottom"),
+      subheadline: s(formData, "hero.subheadline"),
+      ctaPrimary: s(formData, "hero.ctaPrimary") || d.hero.ctaPrimary,
+      ctaSecondary: s(formData, "hero.ctaSecondary") || d.hero.ctaSecondary,
+      stats: lines(s(formData, "hero.stats")).map((line) => {
+        const [value, ...rest] = line.split("|");
+        return { value: value.trim(), label: rest.join("|").trim() };
+      }),
+    },
+    about: {
+      ...heading(formData, "about", d.about),
+      strengths: lines(s(formData, "about.strengths")).map((line) => {
+        const [icon, title, ...rest] = line.split("|");
+        return { icon: (icon || "sparkles").trim(), title: (title || "").trim(), desc: rest.join("|").trim() };
+      }),
+    },
+    why: {
+      ...heading(formData, "why", d.why),
+      stats: lines(s(formData, "why.stats")).map((line) => {
+        const [value, suffix, label, icon] = line.split("|").map((p) => p.trim());
+        return { value: Number(value) || 0, suffix: suffix || "", label: label || "", icon: icon || "award" };
+      }),
+      reasons: lines(s(formData, "why.reasons")).map((line) => {
+        const [icon, title, ...rest] = line.split("|");
+        return { icon: (icon || "sparkles").trim(), title: (title || "").trim(), desc: rest.join("|").trim() };
+      }),
+    },
+    products: heading(formData, "products", d.products),
+    gallery: heading(formData, "gallery", d.gallery),
+    testimonials: heading(formData, "testimonials", d.testimonials),
+    services: heading(formData, "services", d.services),
+    contact: heading(formData, "contact", d.contact),
+  };
+
+  await prisma.siteContent.upsert({
+    where: { id: 1 },
+    update: { data: content },
+    create: { id: 1, data: content },
+  });
+  refresh("/admin/content");
+  redirect("/admin/content");
 }

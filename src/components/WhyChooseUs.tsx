@@ -1,19 +1,20 @@
-import { stats, whyChoose } from "@/lib/data";
+import type { SiteContent } from "@/lib/content";
 import SectionHeading from "./SectionHeading";
 import Reveal from "./Reveal";
 import Counter from "./Counter";
 import Icon from "./Icon";
 
-export default function WhyChooseUs() {
+export default function WhyChooseUs({ content }: { content: SiteContent["why"] }) {
+  const { stats, reasons: whyChoose } = content;
   return (
     <section className="section relative overflow-hidden">
       <div className="absolute left-1/2 top-0 h-[40vh] w-[80vw] -translate-x-1/2 rounded-full bg-gold/5 blur-[140px]" />
       <div className="container-luxe relative">
         <SectionHeading
-          eyebrow="Why Choose Us"
-          title="The MD Traders"
-          highlight="Difference"
-          subtitle="Numbers built on trust, and a promise we keep with every single project."
+          eyebrow={content.eyebrow}
+          title={content.title}
+          highlight={content.highlight}
+          subtitle={content.subtitle}
         />
 
         {/* Stats */}

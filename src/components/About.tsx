@@ -1,9 +1,10 @@
-import { strengths } from "@/lib/data";
+import type { SiteContent } from "@/lib/content";
 import SectionHeading from "./SectionHeading";
 import Reveal from "./Reveal";
 import Icon from "./Icon";
 
-export default function About() {
+export default function About({ content }: { content: SiteContent["about"] }) {
+  const { strengths } = content;
   return (
     <section id="about" className="section relative">
       <div className="container-luxe">
@@ -46,11 +47,11 @@ export default function About() {
           {/* Copy + strengths */}
           <div>
             <SectionHeading
-              eyebrow="About MD Traders"
-              title="Crafting Spaces That"
-              highlight="Inspire"
+              eyebrow={content.eyebrow}
+              title={content.title}
+              highlight={content.highlight}
               center={false}
-              subtitle="At MD Traders, we believe luxury is in the details. We bring together the world's finest tiles, sanitary ware and modular solutions — paired with expert guidance — to turn everyday spaces into statements of elegance."
+              subtitle={content.subtitle}
             />
 
             <div className="mt-10 space-y-4">

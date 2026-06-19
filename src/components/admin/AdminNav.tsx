@@ -2,11 +2,12 @@
 
 import { usePathname } from "next/navigation";
 import {
-  LayoutDashboard, Package, Images, Quote, Sparkles, Settings,
+  LayoutDashboard, Package, Images, Quote, Sparkles, Settings, Type,
 } from "lucide-react";
 
 const links = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/admin/content", label: "Website Text", icon: Type },
   { href: "/admin/products", label: "Products", icon: Package },
   { href: "/admin/gallery", label: "Gallery", icon: Images },
   { href: "/admin/testimonials", label: "Testimonials", icon: Quote },

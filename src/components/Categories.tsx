@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Search, Eye, ArrowRight, X, Check, Sparkles } from "lucide-react";
 import type { Category } from "@/lib/types";
+import type { SiteContent } from "@/lib/content";
 import SectionHeading from "./SectionHeading";
 import Icon from "./Icon";
 
@@ -49,7 +50,7 @@ function CategoryArt({ c, className = "" }: { c: Category; className?: string })
   );
 }
 
-export default function Categories({ categories }: { categories: Category[] }) {
+export default function Categories({ categories, heading }: { categories: Category[]; heading: SiteContent["products"] }) {
   const [query, setQuery] = useState("");
   const [active, setActive] = useState("All");
   const [selected, setSelected] = useState<Category | null>(null);
@@ -77,10 +78,10 @@ export default function Categories({ categories }: { categories: Category[] }) {
     <section id="products" className="section relative">
       <div className="container-luxe">
         <SectionHeading
-          eyebrow="Our Collections"
-          title="Explore Premium"
-          highlight="Categories"
-          subtitle="Six curated worlds of luxury — from Italian marble to bespoke modular kitchens. Search or filter to find your perfect match."
+          eyebrow={heading.eyebrow}
+          title={heading.title}
+          highlight={heading.highlight}
+          subtitle={heading.subtitle}
         />
 
         {/* Smart search + filters */}

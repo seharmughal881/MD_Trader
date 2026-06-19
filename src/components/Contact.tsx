@@ -5,9 +5,10 @@ import { motion } from "framer-motion";
 import { Phone, MapPin, Mail, Clock, MessageCircle, Send, Check } from "lucide-react";
 import { productInterests as categoryOptions } from "@/lib/data";
 import type { BusinessInfo } from "@/lib/types";
+import type { SiteContent } from "@/lib/content";
 import SectionHeading from "./SectionHeading";
 
-export default function Contact({ business }: { business: BusinessInfo }) {
+export default function Contact({ business, heading }: { business: BusinessInfo; heading: SiteContent["contact"] }) {
   const [form, setForm] = useState({ name: "", phone: "", interest: categoryOptions[0], message: "" });
   const [sent, setSent] = useState(false);
 
@@ -30,10 +31,10 @@ export default function Contact({ business }: { business: BusinessInfo }) {
       <div className="absolute left-0 bottom-0 h-[40vh] w-[40vh] rounded-full bg-gold/5 blur-[140px]" />
       <div className="container-luxe relative">
         <SectionHeading
-          eyebrow="Get In Touch"
-          title="Let's Design Your"
-          highlight="Dream Space"
-          subtitle="Book a free consultation or drop by our showroom. Our specialists are ready to help."
+          eyebrow={heading.eyebrow}
+          title={heading.title}
+          highlight={heading.highlight}
+          subtitle={heading.subtitle}
         />
 
         <div className="mt-12 grid gap-6 lg:grid-cols-[1fr_1.1fr]">

@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, Phone, Star } from "lucide-react";
+import type { SiteContent } from "@/lib/content";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -13,7 +14,7 @@ const fadeUp = {
   }),
 };
 
-export default function Hero() {
+export default function Hero({ hero }: { hero: SiteContent["hero"] }) {
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   // Transform-only parallax — GPU-composited, cheap to animate.
@@ -58,7 +59,7 @@ export default function Hero() {
                 <Star key={i} className="h-3.5 w-3.5 fill-gold text-gold" />
               ))}
             </span>
-            Rated 4.9/5 by 10,000+ customers
+            {hero.badge}
           </motion.div>
 
           <motion.h1
@@ -68,9 +69,9 @@ export default function Hero() {
             animate="visible"
             className="font-display mt-6 text-[clamp(2.6rem,7vw,5.2rem)] font-bold leading-[1.04]"
           >
-            Where <span className="text-gold-gradient">Luxury</span>
+            {hero.titleTop}
             <br />
-            Meets <span className="text-gold-gradient">Quality</span>
+            <span className="text-gold-gradient">{hero.titleBottom}</span>
           </motion.h1>
 
           <motion.p
@@ -80,8 +81,7 @@ export default function Hero() {
             animate="visible"
             className="mt-6 max-w-xl text-lg leading-relaxed text-mist"
           >
-            Premium Tiles, Sanitary Ware & Modular Kitchen Solutions — curated for
-            those who believe a home should feel as exceptional as it looks.
+            {hero.subheadline}
           </motion.p>
 
           <motion.div
@@ -95,7 +95,7 @@ export default function Hero() {
               href="#products"
               className="btn-gold group flex items-center gap-2 rounded-full px-8 py-4 text-sm font-semibold"
             >
-              Explore Products
+              {hero.ctaPrimary}
               <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
             </a>
             <a
@@ -103,7 +103,7 @@ export default function Hero() {
               className="btn-ghost flex items-center gap-2 rounded-full px-8 py-4 text-sm font-semibold"
             >
               <Phone className="h-4 w-4" />
-              Get Free Consultation
+              {hero.ctaSecondary}
             </a>
           </motion.div>
 
@@ -114,14 +114,10 @@ export default function Hero() {
             animate="visible"
             className="mt-12 flex flex-wrap gap-x-10 gap-y-4"
           >
-            {[
-              ["25+", "Years of Trust"],
-              ["500+", "Projects Done"],
-              ["100%", "Genuine Products"],
-            ].map(([v, l]) => (
-              <div key={l}>
-                <p className="font-display text-3xl font-semibold text-gold-gradient">{v}</p>
-                <p className="text-xs uppercase tracking-wider text-ash">{l}</p>
+            {hero.stats.map((stat) => (
+              <div key={stat.label}>
+                <p className="font-display text-3xl font-semibold text-gold-gradient">{stat.value}</p>
+                <p className="text-xs uppercase tracking-wider text-ash">{stat.label}</p>
               </div>
             ))}
           </motion.div>
