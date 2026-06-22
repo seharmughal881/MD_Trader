@@ -2,7 +2,7 @@
 
 import { useActionState, useState } from "react";
 import { motion } from "framer-motion";
-import { Lock, User, Loader2, KeyRound, Eye, EyeOff, Copy, Check, ArrowLeft } from "lucide-react";
+import { User, Loader2, KeyRound, Eye, EyeOff, Copy, Check, ArrowLeft } from "lucide-react";
 import { loginAction } from "../actions";
 
 export default function LoginForm({
@@ -71,40 +71,39 @@ export default function LoginForm({
             <label className="block">
               <span className="mb-2 block text-xs font-medium uppercase tracking-wider text-ash">Username</span>
               <div className="group relative">
-                <span className="pointer-events-none absolute inset-y-0 left-0 flex w-12 items-center justify-center border-r border-gold/15 text-gold/60 transition-colors group-focus-within:text-gold">
-                  <User className="h-[18px] w-[18px]" />
-                </span>
                 <input
                   name="username"
                   required
                   autoComplete="username"
                   defaultValue={credentials?.username}
-                  className="input-luxe pl-16"
+                  className="input-luxe"
+                  style={{ paddingRight: "3rem" }}
                   placeholder="admin"
                 />
+                <span className="pointer-events-none absolute inset-y-0 right-0 flex w-12 items-center justify-center border-l border-gold/15 text-gold/60 transition-colors group-focus-within:text-gold">
+                  <User className="h-[18px] w-[18px]" />
+                </span>
               </div>
             </label>
 
             <label className="block">
               <span className="mb-2 block text-xs font-medium uppercase tracking-wider text-ash">Password</span>
               <div className="group relative">
-                <span className="pointer-events-none absolute inset-y-0 left-0 flex w-12 items-center justify-center border-r border-gold/15 text-gold/60 transition-colors group-focus-within:text-gold">
-                  <Lock className="h-[18px] w-[18px]" />
-                </span>
                 <input
                   name="password"
                   type={showPw ? "text" : "password"}
                   required
                   autoComplete="current-password"
                   defaultValue={credentials?.password}
-                  className="input-luxe px-16"
+                  className="input-luxe"
+                  style={{ paddingRight: "3rem" }}
                   placeholder="••••••••"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPw((v) => !v)}
                   aria-label={showPw ? "Hide password" : "Show password"}
-                  className="absolute inset-y-0 right-0 flex w-12 items-center justify-center text-ash transition-colors hover:text-gold"
+                  className="absolute inset-y-0 right-0 flex w-12 items-center justify-center border-l border-gold/15 text-ash transition-colors hover:text-gold"
                 >
                   {showPw ? <EyeOff className="h-[18px] w-[18px]" /> : <Eye className="h-[18px] w-[18px]" />}
                 </button>
