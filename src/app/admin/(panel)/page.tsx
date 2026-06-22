@@ -1,15 +1,21 @@
 import { prisma } from "@/lib/db";
-import { Package, Images, Quote, Sparkles, ArrowRight, Plus } from "lucide-react";
+import { Package, Images, Quote, Sparkles, ArrowRight, Plus, AlertTriangle } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
 export default async function Dashboard() {
-  const [products, gallery, testimonials, services] = await Promise.all([
-    prisma.category.count(),
-    prisma.galleryItem.count(),
-    prisma.testimonial.count(),
-    prisma.service.count(),
-  ]);
+  let products = 0, gallery = 0, testimonials = 0, services = 0;
+  let dbError = false;
+  try {
+    [products, gallery, testimonials, services] = await Promise.all([
+      prisma.category.count(),
+      prisma.galleryItem.count(),
+      prisma.testimonial.count(),
+      prisma.service.count(),
+    ]);
+  } catch {
+    dbError = true;
+  }
 
   const cards = [
     { label: "Products", count: products, href: "/admin/products", icon: Package },
@@ -26,6 +32,20 @@ export default async function Dashboard() {
         <h1 className="font-display text-3xl font-semibold text-cream">Welcome back 👋</h1>
         <p className="mt-1 text-sm text-mist">Manage everything that appears on your website from here.</p>
       </header>
+
+      {dbError && (
+        <div className="mb-6 flex items-start gap-3 rounded-2xl border border-amber-500/30 bg-amber-500/10 p-5 text-amber-200">
+          <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0" />
+          <div>
+            <p className="font-semibold">Database not connected</p>
+            <p className="mt-1 text-sm text-amber-200/80">
+              Set a <code className="rounded bg-ink/40 px-1.5 py-0.5">DATABASE_URL</code> environment
+              variable (a cloud Postgres like Neon) in your Vercel project and run the migration.
+              Until then, the admin panel can&apos;t read or save content.
+            </p>
+          </div>
+        </div>
+      )}
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {cards.map((c) => (
